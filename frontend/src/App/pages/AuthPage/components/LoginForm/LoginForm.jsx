@@ -3,16 +3,36 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { useFormik } from 'formik';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../../../../hooks';
+import AuthService from '../../../../services/AuthService';
 
 const LoginForm = () => {
-  const [authFailed] = useState(false);
+  const [authFailed, setAuthFailed] = useState(false);
+  const auth = useAuth();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/' } };
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       userName: '',
       password: '',
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(JSON.stringify(values, null, 2));
+      setAuthFailed(false);
+      const { userName, password } = values;
+      try {
+        const response = await AuthService.login(userName, password);
+        localStorage.setItem('token', response.data.token);
+        auth.logIn();
+        navigate(from);
+      } catch (e) {
+        console.log(e);
+        formik.setSubmitting(false);
+        setAuthFailed(true);
+      }
     },
   });
 
