@@ -1,16 +1,30 @@
 import React from 'react';
+import * as yup from 'yup';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
+import { useAuth, useSocket } from '../../../../hooks';
 
-const MessagesInput = ({ onClick }) => {
+const MessagesInput = () => {
+  const auth = useAuth();
+  const channelId = useSelector((state) => state.channels.currentChannelId);
+  const emit = useSocket();
+  const username = auth.getUser();
   const formik = useFormik({
     initialValues: {
       body: '',
     },
-    onSubmit: async () => {
+    validationSchema: yup.object().shape({
+      body: yup
+        .string()
+        .trim()
+        .required(),
+    }),
+    onSubmit: async ({ body }) => {
+      console.log(body);
       try {
-        await onClick();
+        await emit.sendMessage({ body, channelId, username });
         formik.resetForm();
       } catch (err) {
         formik.setSubmitting(false);

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Navbar, Button, Container } from 'react-bootstrap';
 import React from 'react';
-import useAuth from '../../App/hooks';
+import { useAuth } from '../../App/hooks';
 
 const NavBar = () => {
   const auth = useAuth();

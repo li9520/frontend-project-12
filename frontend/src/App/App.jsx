@@ -10,7 +10,7 @@ import ChatPage from './pages/ChatPage';
 import NotFoundPage from './pages/NotFoundPage';
 import Layout from '../components/Layout';
 import routes from '../utils/routes';
-import useAuth from './hooks';
+import { useAuth } from './hooks';
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();

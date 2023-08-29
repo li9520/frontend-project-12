@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { useFormik } from 'formik';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '../../../../hooks';
+import { useAuth } from '../../../../hooks';
 import AuthService from '../../../../services/AuthService';
 
 const LoginForm = () => {
@@ -25,8 +25,7 @@ const LoginForm = () => {
       const { userName, password } = values;
       try {
         const response = await AuthService.login(userName, password);
-        localStorage.setItem('token', response.data.token);
-        auth.logIn();
+        auth.logIn(response.data);
         navigate(from);
       } catch (e) {
         console.log(e);
