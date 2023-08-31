@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Spinner, Container, Row,
 } from 'react-bootstrap';
@@ -8,6 +8,14 @@ import { addChannels, updateCurrentChannel } from '../../../slices/channelsSlice
 import Channels from './components/Channels';
 import Mesasages from './components/Messages';
 import { addMessages } from '../../../slices/messagesSlice';
+import getModal from './components/Modals';
+
+const Modal = () => {
+  const { type } = useSelector((state) => state.modals);
+  if (!type) return null;
+  const Component = getModal(type);
+  return <Component />;
+};
 
 const ChatPage = () => {
   const [isLoading, setLoading] = useState(true);
@@ -37,6 +45,7 @@ const ChatPage = () => {
       <Row className="h-100 bg-white flex-md-row">
         <Channels />
         <Mesasages />
+        <Modal />
       </Row>
     </Container>
   );

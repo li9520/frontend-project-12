@@ -4,6 +4,7 @@ import {
   Col, Button, Nav, ButtonGroup, Dropdown,
 } from 'react-bootstrap';
 import { channelsSelectors, updateCurrentChannel } from '../../../../../slices/channelsSlice';
+import { showModal } from '../../../../../slices/modalsSlice';
 
 const Channels = () => {
   const dispatch = useDispatch();
@@ -16,12 +17,12 @@ const Channels = () => {
   const changeCurrentChannel = (id) => () => {
     dispatch(updateCurrentChannel(id));
   };
-
+  const handleShow = (type, item = null) => dispatch(showModal({ type, item }));
   return (
     <Col className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
         <b>Каналы</b>
-        <Button className="p-0 text-primary" variant="group-vertical">
+        <Button className="p-0 text-primary" variant="group-vertical" onClick={() => handleShow('adding')}>
           <svg
             fill="currentColor"
             viewBox="0 0 16 16"
@@ -58,8 +59,8 @@ const Channels = () => {
                       <span className="visually-hidden">Управление каналом</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => {}} variant="light" eventKey="1">Удалить</Dropdown.Item>
-                      <Dropdown.Item onClick={() => {}} variant="light" eventKey="2">Перекименовать</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleShow('removing', { id })} variant="light" eventKey="1">Удалить</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleShow('renaming', { id, name })} variant="light" eventKey="2">Переименовать</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 )}

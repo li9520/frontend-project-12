@@ -13,12 +13,11 @@ const SocketProvider = ({ socket, children }) => {
     });
 
     socket.on('newChannel', (payload) => {
-      console.log(payload); // { id: 6, name: "new channel", removable: true }
+      console.log('newChannel', payload); // { id: 6, name: "new channel", removable: true }
       dispatch(addChannel(payload));
     });
 
     socket.on('removeChannel', (payload) => {
-      console.log(payload); // { id: 6 };
       dispatch(deleteChannel(payload));
     });
 
